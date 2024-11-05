@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS BusDB;
+CREATE DATABASE BusDB;
+USE BusDB;
+
 DROP TABLE IF EXISTS Ride;
 DROP TABLE IF EXISTS StopsOnLine;
 DROP TABLE IF EXISTS BusStop;
@@ -125,3 +129,36 @@ VALUES
     ('2024-11-02', '07:45:00', 20, 3, '6A', 'DTU', 'Københavns Hovedbanegård');
 
 SELECT * FROM StopsOnLine;
+
+# Get all passenger id's where their ride started at the first stop on a bus line.
+SELECT PassengerID FROM Ride
+JOIN 
+    StopsOnLine AS StartStopLine 
+    ON Ride.BusLineName = StartStopLine.BusLineName
+    AND Ride.StartStop = StartStopLine.StopName
+WHERE StopOrder = 1;
+
+# The name of the bus stop served by the most bus lines.
+# Without Counter
+SELECT StopName FROM StopsOnLine
+GROUP BY StopID, StopName
+HAVING COUNT(*) = (
+	SELECT MAX(StopCount)
+    FROM (
+		SELECT COUNT(*) AS StopCount
+        FROM StopsOnLine
+        GROUP BY StopID
+	) AS Count
+);
+
+# With Counter
+SELECT StopName, COUNT(*) FROM StopsOnLine
+GROUP BY StopID, StopName
+HAVING COUNT(*) = (
+	SELECT MAX(StopCount)
+    FROM (
+		SELECT COUNT(*) AS StopCount
+        FROM StopsOnLine
+        GROUP BY StopID
+	) AS Count
+);
