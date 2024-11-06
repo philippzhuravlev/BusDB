@@ -1,9 +1,14 @@
+SET FOREIGN_KEY_CHECKS = 0;
+
 DROP TABLE IF EXISTS Ride;
 DROP TABLE IF EXISTS StopsOnLine;
 DROP TABLE IF EXISTS BusStop;
 DROP TABLE IF EXISTS BusLine;
 DROP TABLE IF EXISTS Passenger;
 DROP TABLE IF EXISTS Address;
+
+SET FOREIGN_KEY_CHECKS = 0;
+
 
 CREATE TABLE Address
 	( AddressID        INT AUTO_INCREMENT PRIMARY KEY
@@ -33,7 +38,8 @@ CREATE TABLE BusLine
 	( BusLineID			INT AUTO_INCREMENT PRIMARY KEY
     , BusLineName		VARCHAR(5) UNIQUE # e.g. 6A, 300S
 	, FinalDestination	VARCHAR(45) # compare 6A Buddinge vs 6A Emdrup Torv. Can be combined into BusLineName
-    , StopName			VARCHAR(45) # not a foreign key; just an attribute for reference
+    #, StopName			VARCHAR(45)
+    #, FOREIGN KEY		(StopName)		REFERENCES	BusStop(StopName)
 	);
 
 CREATE TABLE StopsOnLine
@@ -92,7 +98,7 @@ VALUES
 	('Toldbodgade', 'Copenhagen', '1253', '1021', 'Denmark'),
 	('Landemærket', 'Copenhagen', '1119', '1022', 'Denmark'),
 	('Slagelsegade', 'Copenhagen', '2100', '1034', 'Denmark'),
-        ('Lilla Torg', 'Malmö', '21134', '2001', 'SwedenEw'),
+	('Lilla Torg', 'Malmö', '21134', '2001', 'SwedenEw'),
 	('Adelgade', 'Copenhagen', '1304', '1024', 'Denmark'),
 	('Store Kongensgade', 'Copenhagen', '1264', '1025', 'Denmark'),
 	('Sølvgade', 'Copenhagen', '1307', '1026', 'Denmark'),
@@ -292,8 +298,8 @@ VALUES
     ('7A', 'Rødovre St.'), 
     ('33', 'Sundbyvester Plads');
 
-INSERT INTO StopsOnLine (BusLineID, BusLineName, StopID, StopName, StopOrder) 
-VALUES 
+INSERT INTO StopsOnLine (BusLineID, BusLineName, StopID, StopName, StopOrder) # 6A
+VALUES
     #-- 6A Line
     (1, '6A', 1, 'Københavns Hovedbanegård', 1),
     (1, '6A', 2, 'Rådhuspladsen', 2),
@@ -304,9 +310,8 @@ VALUES
     (1, '6A', 7, 'Falkoner Allé', 7),
     (1, '6A', 8, 'Flintholm St.', 8),
     (1, '6A', 9, 'Bellahøj', 9),
-    (1, '6A', 10, 'Gladsaxe Trafikplads', 10);
-INSERT INTO StopsOnLine (BusLineID, BusLineName, StopID, StopName, StopOrder) 
-VALUES 
+    (1, '6A', 10, 'Gladsaxe Trafikplads', 10),
+
    # -- 300S Line
     (2, '300S', 1, 'Københavns Hovedbanegård', 1),
     (2, '300S', 2, 'Rådhuspladsen', 2),
@@ -317,9 +322,8 @@ VALUES
     (2, '300S', 14, 'Lundtofteparken', 7),
     (2, '300S', 15, 'DTU', 8),
     (2, '300S', 16, 'Lyngby St.', 9),
-    (2, '300S', 17, 'Holte St.', 10);
-INSERT INTO StopsOnLine (BusLineID, BusLineName, StopID, StopName, StopOrder) 
-VALUES 
+    (2, '300S', 17, 'Holte St.', 10),
+
     #-- 150S Line
     (3, '150S', 3, 'Nørreport', 1),
     (3, '150S', 15, 'DTU', 2),
@@ -330,9 +334,8 @@ VALUES
     (3, '150S', 12, 'Svanemøllen St.', 7),
     (3, '150S', 13, 'Ryparken St.', 8),
     (3, '150S', 20, 'Hellerup St.', 9),
-    (3, '150S', 21, 'Ordrup', 10);
-INSERT INTO StopsOnLine (BusLineID, BusLineName, StopID, StopName, StopOrder) 
-VALUES 
+    (3, '150S', 21, 'Ordrup', 10),
+
     #-- 600S Line
     (4, '600S', 3, 'Nørreport', 1),
     (4, '600S', 1, 'Københavns Hovedbanegård', 2),
@@ -343,9 +346,8 @@ VALUES
     (4, '600S', 25, 'Universitetet St.', 7),
     (4, '600S', 26, 'Vestamager', 8),
     (4, '600S', 27, 'Tårnby St.', 9),
-    (4, '600S', 28, 'Kastrup', 10);
-INSERT INTO StopsOnLine (BusLineID, BusLineName, StopID, StopName, StopOrder) 
-VALUES 
+    (4, '600S', 28, 'Kastrup', 10),
+
    # -- 5C Line
     (5, '5C', 28, 'Lufthavnen', 1),
     (5, '5C', 27, 'Kastrup St.', 2),
@@ -356,9 +358,8 @@ VALUES
     (5, '5C', 3, 'Nørreport', 7),
     (5, '5C', 31, 'Nørrebro St.', 8),
     (5, '5C', 32, 'Bispebjerg St.', 9),
-    (5, '5C', 33, 'Herlev St.', 10);
-INSERT INTO StopsOnLine (BusLineID, BusLineName, StopID, StopName, StopOrder) 
-VALUES 
+    (5, '5C', 33, 'Herlev St.', 10),
+
     #-- 1A Line
     (6, '1A', 34, 'Avedøre Station', 1),
     (6, '1A', 35, 'Friheden St.', 2),
@@ -369,9 +370,8 @@ VALUES
     (6, '1A', 18, 'Trianglen', 7),
     (6, '1A', 39, 'Nordhavn St.', 8),
     (6, '1A', 20, 'Hellerup St.', 9),
-    (6, '1A', 40, 'Gentofte St.', 10);
-INSERT INTO StopsOnLine (BusLineID, BusLineName, StopID, StopName, StopOrder) 
-VALUES 
+    (6, '1A', 40, 'Gentofte St.', 10),
+
    # -- 2A Line
     (7, '2A', 41, 'Tingbjerg', 1),
     (7, '2A', 42, 'Brønshøj Torv', 2),
@@ -382,9 +382,8 @@ VALUES
     (7, '2A', 44, 'Kongens Nytorv', 7),
     (7, '2A', 30, 'Christianshavn', 8),
     (7, '2A', 22, 'Amagerbro St.', 9),
-    (7, '2A', 45, 'Lergravsparken St.', 10);
-INSERT INTO StopsOnLine (BusLineID, BusLineName, StopID, StopName, StopOrder) 
-VALUES 
+    (7, '2A', 45, 'Lergravsparken St.', 10),
+
    # -- 9A Line
     (8, '9A', 46, 'Glostrup Station', 1),
     (8, '9A', 47, 'Brøndbyvester', 2),
@@ -395,9 +394,8 @@ VALUES
     (8, '9A', 51, 'Rigshospitalet', 7),
     (8, '9A', 12, 'Svanemøllen St.', 8),
     (8, '9A', 20, 'Hellerup St.', 9),
-    (8, '9A', 21, 'Ordrup', 10);
-INSERT INTO StopsOnLine (BusLineID, BusLineName, StopID, StopName, StopOrder) 
-VALUES 
+    (8, '9A', 21, 'Ordrup', 10),
+
    # -- 350S Line
     (9, '350S', 52, 'Ballerup St.', 1),
     (9, '350S', 53, 'Måløv', 2),
@@ -408,9 +406,8 @@ VALUES
     (9, '350S', 4, 'Forum', 7),
     (9, '350S', 55, 'Frederiksberg St.', 8),
     (9, '350S', 56, 'Fasanvej St.', 9),
-    (9, '350S', 57, 'Lindevang', 10);
-    INSERT INTO StopsOnLine (BusLineID, BusLineName, StopID, StopName, StopOrder) 
-VALUES 
+    (9, '350S', 57, 'Lindevang', 10),
+
     #-- 250S Line
     (10, '250S', 58, 'Bella Center', 1),
     (10, '250S', 59, 'Ørestad St.', 2),
@@ -421,10 +418,8 @@ VALUES
     (10, '250S', 2, 'Rådhuspladsen', 7),
     (10, '250S', 4, 'Forum', 8),
     (10, '250S', 60, 'Søndre Fasanvej', 9),
-    (10, '250S', 61, 'Langgade St.', 10);
-    
-INSERT INTO StopsOnLine (BusLineID, BusLineName, StopID, StopName, StopOrder) 
-VALUES 
+    (10, '250S', 61, 'Langgade St.', 10),
+
     #-- 7A Line
     (11, '7A', 62, 'Rødovre St.', 1),
     (11, '7A', 63, 'Hvidovre Hospital', 2),
@@ -435,10 +430,8 @@ VALUES
     (11, '7A', 18, 'Trianglen', 7),
     (11, '7A', 11, 'Østerport St.', 8),
     (11, '7A', 39, 'Nordhavn St.', 9),
-    (11, '7A', 20, 'Hellerup St.', 10);
-    
-INSERT INTO StopsOnLine (BusLineID, BusLineName, StopID, StopName, StopOrder) 
-VALUES 
+    (11, '7A', 20, 'Hellerup St.', 10),
+
     #-- 33 Line
     (12, '33', 64, 'Sundbyvester Plads', 1),
     (12, '33', 22, 'Amagerbro St.', 2),
