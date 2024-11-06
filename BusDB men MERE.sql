@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS BusLine;
 DROP TABLE IF EXISTS Passenger;
 DROP TABLE IF EXISTS Address;
 
-SET FOREIGN_KEY_CHECKS = 0;
+SET FOREIGN_KEY_CHECKS = 1;
 
 
 CREATE TABLE Address
@@ -270,6 +270,8 @@ VALUES
     ('Husum Torv', ST_GeomFromText('POINT(55.7118 12.4772)')),
     ('Rigshospitalet', ST_GeomFromText('POINT(55.6954 12.5705)')),
     ('Bispebjerg Hospital', ST_GeomFromText('POINT(55.7098 12.5422)')),
+    ('Ballerup St.', ST_GeomFromText('POINT(55.7317 12.3655)')),
+    ('Måløv', ST_GeomFromText('POINT(55.7479 12.3279)')),
     ('Frederiksberg St.', ST_GeomFromText('POINT(55.6780 12.5307)')),
     ('Fasanvej St.', ST_GeomFromText('POINT(55.6808 12.5188)')),
     ('Lindevang', ST_GeomFromText('POINT(55.6836 12.5056)')),
@@ -281,7 +283,6 @@ VALUES
     ('Hvidovre Hospital', ST_GeomFromText('POINT(55.6546 12.4845)')),
     ('Sundbyvester Plads', ST_GeomFromText('POINT(55.6543 12.6028)')),
     ('Vanløse St.', ST_GeomFromText('POINT(55.6836 12.4876)'));
-
 
 INSERT INTO BusLine (BusLineName, FinalDestination) 
 VALUES 
@@ -332,7 +333,7 @@ VALUES
     (3, '150S', 18, 'Trianglen', 5),
     (3, '150S', 19, 'Østerbrogade', 6),
     (3, '150S', 12, 'Svanemøllen St.', 7),
-    (3, '150S', 13, 'Ryparken St.', 8),
+    (3, '150S', 13, 'Ryparken', 8),
     (3, '150S', 20, 'Hellerup St.', 9),
     (3, '150S', 21, 'Ordrup', 10),
 
@@ -349,100 +350,100 @@ VALUES
     (4, '600S', 28, 'Kastrup', 10),
 
    # -- 5C Line
-    (5, '5C', 28, 'Lufthavnen', 1),
-    (5, '5C', 27, 'Kastrup St.', 2),
-    (5, '5C', 29, 'Amager Strand', 3),
+    (5, '5C', 29, 'Lufthavnen', 1),
+    (5, '5C', 28, 'Kastrup', 2),
+    (5, '5C', 30, 'Amager Strand', 3),
     (5, '5C', 22, 'Amagerbro St.', 4),
-    (5, '5C', 30, 'Christianshavn', 5),
+    (5, '5C', 31, 'Christianshavn', 5),
     (5, '5C', 2, 'Rådhuspladsen', 6),
     (5, '5C', 3, 'Nørreport', 7),
-    (5, '5C', 31, 'Nørrebro St.', 8),
-    (5, '5C', 32, 'Bispebjerg St.', 9),
-    (5, '5C', 33, 'Herlev St.', 10),
+    (5, '5C', 32, 'Nørrebro St.', 8),
+    (5, '5C', 33, 'Bispebjerg St.', 9),
+    (5, '5C', 34, 'Herlev St.', 10),
 
     #-- 1A Line
-    (6, '1A', 34, 'Avedøre Station', 1),
-    (6, '1A', 35, 'Friheden St.', 2),
-    (6, '1A', 36, 'Hvidovrevej', 3),
-    (6, '1A', 37, 'Valby St.', 4),
-    (6, '1A', 38, 'Enghave Plads', 5),
+    (6, '1A', 35, 'Avedøre Station', 1),
+    (6, '1A', 36, 'Friheden St.', 2),
+    (6, '1A', 37, 'Hvidovrevej', 3),
+    (6, '1A', 38, 'Valby St.', 4),
+    (6, '1A', 39, 'Enghave Plads', 5),
     (6, '1A', 1, 'Københavns Hovedbanegård', 6),
     (6, '1A', 18, 'Trianglen', 7),
-    (6, '1A', 39, 'Nordhavn St.', 8),
+    (6, '1A', 40, 'Nordhavn St.', 8),
     (6, '1A', 20, 'Hellerup St.', 9),
-    (6, '1A', 40, 'Gentofte St.', 10),
+    (6, '1A', 41, 'Gentofte St.', 10),
 
    # -- 2A Line
-    (7, '2A', 41, 'Tingbjerg', 1),
-    (7, '2A', 42, 'Brønshøj Torv', 2),
-    (7, '2A', 31, 'Nørrebro St.', 3),
-    (7, '2A', 43, 'Fælledparken', 4),
+    (7, '2A', 42, 'Tingbjerg', 1),
+    (7, '2A', 43, 'Brønshøj Torv', 2),
+    (7, '2A', 32, 'Nørrebro St.', 3),
+    (7, '2A', 44, 'Fælledparken', 4),
     (7, '2A', 18, 'Trianglen', 5),
     (7, '2A', 11, 'Østerport St.', 6),
-    (7, '2A', 44, 'Kongens Nytorv', 7),
-    (7, '2A', 30, 'Christianshavn', 8),
+    (7, '2A', 45, 'Kongens Nytorv', 7),
+    (7, '2A', 31, 'Christianshavn', 8),
     (7, '2A', 22, 'Amagerbro St.', 9),
-    (7, '2A', 45, 'Lergravsparken St.', 10),
+    (7, '2A', 46, 'Lergravsparken St.', 10),
 
    # -- 9A Line
-    (8, '9A', 46, 'Glostrup Station', 1),
-    (8, '9A', 47, 'Brøndbyvester', 2),
-    (8, '9A', 48, 'Brøndbyøster', 3),
-    (8, '9A', 49, 'Rødovre Centrum', 4),
-    (8, '9A', 50, 'Husum Torv', 5),
-    (8, '9A', 31, 'Nørrebro St.', 6),
-    (8, '9A', 51, 'Rigshospitalet', 7),
+    (8, '9A', 47, 'Glostrup Station', 1),
+    (8, '9A', 48, 'Brøndbyvester', 2),
+    (8, '9A', 49, 'Brøndbyøster', 3),
+    (8, '9A', 50, 'Rødovre Centrum', 4),
+    (8, '9A', 51, 'Husum Torv', 5),
+    (8, '9A', 32, 'Nørrebro St.', 6),
+    (8, '9A', 52, 'Rigshospitalet', 7),
     (8, '9A', 12, 'Svanemøllen St.', 8),
     (8, '9A', 20, 'Hellerup St.', 9),
     (8, '9A', 21, 'Ordrup', 10),
 
    # -- 350S Line
-    (9, '350S', 52, 'Ballerup St.', 1),
-    (9, '350S', 53, 'Måløv', 2),
-    (9, '350S', 33, 'Herlev St.', 3),
-    (9, '350S', 50, 'Husum Torv', 4),
-    (9, '350S', 54, 'Bispebjerg Hospital', 5),
-    (9, '350S', 31, 'Nørrebro St.', 6),
+    (9, '350S', 54, 'Ballerup St.', 1),
+    (9, '350S', 55, 'Måløv', 2),
+    (9, '350S', 34, 'Herlev St.', 3),
+    (9, '350S', 51, 'Husum Torv', 4),
+    (9, '350S', 53, 'Bispebjerg Hospital', 5),
+    (9, '350S', 32, 'Nørrebro St.', 6),
     (9, '350S', 4, 'Forum', 7),
-    (9, '350S', 55, 'Frederiksberg St.', 8),
-    (9, '350S', 56, 'Fasanvej St.', 9),
-    (9, '350S', 57, 'Lindevang', 10),
+    (9, '350S', 56, 'Frederiksberg St.', 8),
+    (9, '350S', 57, 'Fasanvej St.', 9),
+    (9, '350S', 58, 'Lindevang', 10),
 
     #-- 250S Line
-    (10, '250S', 58, 'Bella Center', 1),
-    (10, '250S', 59, 'Ørestad St.', 2),
-    (10, '250S', 29, 'Amager Strand', 3),
+    (10, '250S', 59, 'Bella Center', 1),
+    (10, '250S', 60, 'Ørestad St.', 2),
+    (10, '250S', 30, 'Amager Strand', 3),
     (10, '250S', 23, 'Islands Brygge', 4),
-    (10, '250S', 30, 'Christianshavn', 5),
+    (10, '250S', 31, 'Christianshavn', 5),
     (10, '250S', 1, 'Københavns Hovedbanegård', 6),
     (10, '250S', 2, 'Rådhuspladsen', 7),
     (10, '250S', 4, 'Forum', 8),
-    (10, '250S', 60, 'Søndre Fasanvej', 9),
-    (10, '250S', 61, 'Langgade St.', 10),
+    (10, '250S', 61, 'Søndre Fasanvej', 9),
+    (10, '250S', 62, 'Langgade St.', 10),
 
     #-- 7A Line
-    (11, '7A', 62, 'Rødovre St.', 1),
-    (11, '7A', 63, 'Hvidovre Hospital', 2),
-    (11, '7A', 37, 'Valby St.', 3),
-    (11, '7A', 38, 'Enghave Plads', 4),
-    (11, '7A', 31, 'Nørrebro St.', 5),
-    (11, '7A', 51, 'Rigshospitalet', 6),
+    (11, '7A', 63, 'Rødovre St.', 1),
+    (11, '7A', 64, 'Hvidovre Hospital', 2),
+    (11, '7A', 38, 'Valby St.', 3),
+    (11, '7A', 39, 'Enghave Plads', 4),
+    (11, '7A', 32, 'Nørrebro St.', 5),
+    (11, '7A', 52, 'Rigshospitalet', 6),
     (11, '7A', 18, 'Trianglen', 7),
     (11, '7A', 11, 'Østerport St.', 8),
-    (11, '7A', 39, 'Nordhavn St.', 9),
+    (11, '7A', 40, 'Nordhavn St.', 9),
     (11, '7A', 20, 'Hellerup St.', 10),
 
     #-- 33 Line
-    (12, '33', 64, 'Sundbyvester Plads', 1),
+    (12, '33', 65, 'Sundbyvester Plads', 1),
     (12, '33', 22, 'Amagerbro St.', 2),
-    (12, '33', 30, 'Christianshavn', 3),
+    (12, '33', 31, 'Christianshavn', 3),
     (12, '33', 1, 'Københavns Hovedbanegård', 4),
     (12, '33', 2, 'Rådhuspladsen', 5),
     (12, '33', 3, 'Nørreport', 6),
     (12, '33', 4, 'Forum', 7),
     (12, '33', 8, 'Flintholm St.', 8),
-    (12, '33', 65, 'Vanløse St.', 9),
-    (12, '33', 49, 'Rødovre Centrum', 10);
+    (12, '33', 66, 'Vanløse St.', 9),
+    (12, '33', 50, 'Rødovre Centrum', 10);
 
 
 INSERT INTO Ride (StartDate, StartTime, Duration, PassengerID, BusLineName, StartStop, EndStop)
