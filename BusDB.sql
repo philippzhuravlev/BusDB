@@ -805,3 +805,11 @@ HAVING COUNT(*) = (
         GROUP BY StopID
 	) AS Count
 );
+
+# For each line, the ID of the passenger who took the ride that lasted longer.
+SELECT PassengerID, BusLineName, Duration FROM Ride AS OuterRide
+WHERE Duration = (
+	SELECT MAX(Duration) FROM Ride AS InnerRide
+    WHERE InnerRide.BusLineName = OuterRide.BusLineName);
+# Erhm det her giver alle id'er der har taget den længste tur på en BusLine og ikke kun en enkelt. Tænker det var det de ville have. Even tho der ikke står "passengers" men "passenger". Men altså hvad nu hvis der var flere der havde kørt den samme tid du forstår yeh
+
