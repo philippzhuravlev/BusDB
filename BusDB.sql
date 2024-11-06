@@ -813,3 +813,14 @@ WHERE Duration = (
     WHERE InnerRide.BusLineName = OuterRide.BusLineName);
 # Erhm det her giver alle id'er der har taget den længste tur på en BusLine og ikke kun en enkelt. Tænker det var det de ville have. Even tho der ikke står "passengers" men "passenger". Men altså hvad nu hvis der var flere der havde kørt den samme tid du forstår yeh
 
+# The ID of the passengers who never took a bus line more than once per day.
+SELECT PassengerID, StartDate FROM Ride
+GROUP BY StartDate, PassengerID
+HAVING COUNT(*) = 1;
+
+/* The name of the bus stops that are never used, that is, they are neither the start
+	nor the end stop for any ride.*/
+SELECT StopName FROM BusStop
+WHERE StopName NOT IN (SELECT StartStop FROM Ride)
+AND StopName NOT IN (SELECT EndStop FROM Ride);
+
