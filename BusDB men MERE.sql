@@ -38,8 +38,8 @@ CREATE TABLE BusLine
 	( BusLineID			INT AUTO_INCREMENT PRIMARY KEY
     , BusLineName		VARCHAR(5) UNIQUE # e.g. 6A, 300S
 	, FinalDestination	VARCHAR(45) # compare 6A Buddinge vs 6A Emdrup Torv. Can be combined into BusLineName
-    , StopName			VARCHAR(45)
-    , FOREIGN KEY		(StopName)		REFERENCES	BusStop(StopName)
+    #, StopName			VARCHAR(45)
+    #, FOREIGN KEY		(StopName)		REFERENCES	BusStop(StopName)
 	);
 
 CREATE TABLE StopsOnLine
