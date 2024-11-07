@@ -825,3 +825,39 @@ SELECT StopName FROM BusStop
 WHERE StopName NOT IN (SELECT StartStop FROM Ride)
 AND StopName NOT IN (SELECT EndStop FROM Ride);
 
+/* A trigger that prevents inserting a ride starting and ending at the same stop,
+or at a stop not served by that line. */
+DROP TRIGGER IF EXISTS Ride_Before_Insert;
+
+DELIMITER //
+CREATE TRIGGER Ride_Before_Insert
+BEFORE INSERT ON Ride
+FOR EACH ROW
+BEGIN
+	# check if StartStop and EndStop is the same
+	IF NEW.StartStop = NEW.EndStop
+	THEN
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'StartStop and EndStop cannot be the same';
+    END IF;
+    
+    # check if StartStop is served by the given Bus Line
+    IF NOT EXISTS (
+		SELECT StopName FROM StopsOnLine
+        WHERE NEW.StartStop = StopName AND NEW.BusLineName = BusLineName)
+	THEN 
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'The StartStop is not served by the BusLineName';
+	END IF;
+    
+    # check if EndStop is served by the given Bus Line
+    IF NOT EXISTS (
+		SELECT StopName FROM StopsOnLine
+        WHERE NEW.EndStop = StopName AND NEW.BusLineName = BusLineName)
+	THEN 
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'The EndStop is not served by the BusLineName';
+	END IF;
+END //
+DELIMITER ;
+
