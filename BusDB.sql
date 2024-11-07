@@ -162,3 +162,55 @@ HAVING COUNT(*) = (
         GROUP BY StopID
 	) AS Count
 );
+
+DELIMITER //
+
+CREATE PROCEDURE AddStop (IN vBusLineName VARCHAR(45), IN vStopName VARCHAR(45)) 
+CONTAINS SQL
+`Kebab_dans`:
+BEGIN
+    DECLARE vStopID INT;        -- to hold StopID
+    DECLARE vBusLineID INT;     -- to hold BusLineID
+
+    -- Check if StopName exists in the BusStop table
+    SELECT StopID INTO vStopID FROM BusStop WHERE StopName = vStopName;
+    IF vStopID IS NULL THEN
+        SELECT 'Stop does not exist in BusStop table' AS Message; 
+        LEAVE `kebab_dans`; -- Exit the procedure
+    END IF;
+        
+    -- Check if BusLineName exists in the BusLine table
+    SELECT BusLineID INTO vBusLineID FROM BusLine WHERE BusLineName = vBusLineName;
+    IF vBusLineID IS NULL THEN
+        SELECT 'Bus line does not exist in BusLine table' AS Message;
+        LEAVE `Kebab_dans`; -- Exit the procedure
+    END IF;
+	 
+    -- Check if the stop is already on the bus line's route
+    IF EXISTS (
+        SELECT 1
+        FROM StopsOnLine
+        WHERE BusLineID = vBusLineID AND StopID = vStopID
+    ) THEN
+        SELECT 'Stop already exists on this line' AS Message;
+
+    ELSE
+        -- If it is not on the route, add the new stop
+        INSERT INTO StopsOnLine (BusLineID, BusLineName, StopID, StopName, StopOrder)
+        VALUES (
+            vBusLineID,
+            vBusLineName,
+            vStopID,
+            vStopName,
+            (SELECT MAX(StopOrder) + 1 FROM StopsOnLine WHERE BusLineID = vBusLineID)
+        );
+        SELECT 'Stop added to the route successfully' AS Message;
+    END IF; 
+
+END //
+
+DELIMITER ;
+
+
+CALL AddStop('150S', 'DTU');
+SELECT * FROM StopsOnLine;
