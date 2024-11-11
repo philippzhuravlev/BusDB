@@ -1,7 +1,3 @@
-DROP DATABASE IF EXISTS BusDB;
-CREATE DATABASE BusDB;
-USE BusDB;
-
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS Ride;
@@ -53,9 +49,9 @@ CREATE TABLE StopsOnLine
 	, StopID			INT
     , StopName			VARCHAR(45)
     , StopOrder			INT
-    , FOREIGN KEY		(BusLineID) 	REFERENCES 	BusLine(BusLineID) 
+    , FOREIGN KEY		(BusLineID) 	REFERENCES 	BusLine(BusLineID)
     , FOREIGN KEY		(BusLineName)	REFERENCES	BusLine(BusLineName)
-    , FOREIGN KEY		(StopID) 		REFERENCES 	BusStop(StopID) 
+    , FOREIGN KEY		(StopID) 		REFERENCES 	BusStop(StopID)
     , FOREIGN KEY		(StopName)		REFERENCES	BusStop(StopName)
     );   
 
@@ -773,164 +769,4 @@ VALUES
     ('2024-11-09', '10:15:00', 22, 7, '2A', 'Brønshøj Torv', 'Københavns Hovedbanegård'),
     ('2024-11-09', '10:30:00', 12, 9, '2A', 'Kongens Nytorv', 'Nørreport');
 
-# Get all passenger id's where their ride started at the first stop on a bus line.
-SELECT PassengerID FROM Ride
-JOIN 
-    StopsOnLine AS StartStopLine 
-    ON Ride.BusLineName = StartStopLine.BusLineName
-    AND Ride.StartStop = StartStopLine.StopName
-WHERE StopOrder = 1;
-
-# The name of the bus stop served by the most bus lines.
-# Without Counter
-SELECT StopName FROM StopsOnLine
-GROUP BY StopID, StopName
-HAVING COUNT(*) = (
-	SELECT MAX(StopCount)
-    FROM (
-		SELECT COUNT(*) AS StopCount
-        FROM StopsOnLine
-        GROUP BY StopID
-	) AS Count
-);
-
-# With Counter
-SELECT StopName, COUNT(*) FROM StopsOnLine
-GROUP BY StopID, StopName
-HAVING COUNT(*) = (
-	SELECT MAX(StopCount)
-    FROM (
-		SELECT COUNT(*) AS StopCount
-        FROM StopsOnLine
-        GROUP BY StopID
-	) AS Count
-);
-
-# For each line, the ID of the passenger who took the ride that lasted longer.
-SELECT PassengerID, BusLineName, Duration FROM Ride AS OuterRide
-WHERE Duration = (
-	SELECT MAX(Duration) FROM Ride AS InnerRide
-    WHERE InnerRide.BusLineName = OuterRide.BusLineName);
-# Erhm det her giver alle id'er der har taget den længste tur på en BusLine og ikke kun en enkelt. Tænker det var det de ville have. Even tho der ikke står "passengers" men "passenger". Men altså hvad nu hvis der var flere der havde kørt den samme tid du forstår yeh
-
-# The ID of the passengers who never took a bus line more than once per day.
-SELECT DISTINCT PassengerID FROM Ride
-GROUP BY StartDate, PassengerID
-HAVING COUNT(*) = 1;
-
-
-/* The name of the bus stops that are never used, that is, they are neither the start
-	nor the end stop for any ride.*/
-SELECT StopName FROM BusStop
-WHERE StopName NOT IN (SELECT StartStop FROM Ride)
-AND StopName NOT IN (SELECT EndStop FROM Ride);
-
-/* A trigger that prevents inserting a ride starting and ending at the same stop,
-or at a stop not served by that line. */
-DROP TRIGGER IF EXISTS Ride_Before_Insert;
-
-DELIMITER //
-CREATE TRIGGER Ride_Before_Insert
-BEFORE INSERT ON Ride
-FOR EACH ROW
-BEGIN
-	# check if StartStop and EndStop is the same
-	IF NEW.StartStop = NEW.EndStop
-	THEN
-		SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'StartStop and EndStop cannot be the same';
-    END IF;
-    
-    # check if StartStop is served by the given Bus Line
-    IF NOT EXISTS (
-		SELECT StopName FROM StopsOnLine
-        WHERE NEW.StartStop = StopName AND NEW.BusLineName = BusLineName)
-	THEN 
-		SIGNAL SQLSTATE '45000'
-		SET MESSAGE_TEXT = 'The StartStop is not served by the BusLineName';
-	END IF;
-    
-    # check if EndStop is served by the given Bus Line
-    IF NOT EXISTS (
-		SELECT StopName FROM StopsOnLine
-        WHERE NEW.EndStop = StopName AND NEW.BusLineName = BusLineName)
-	THEN 
-		SIGNAL SQLSTATE '45000'
-		SET MESSAGE_TEXT = 'The EndStop is not served by the BusLineName';
-	END IF;
-END //
-DELIMITER ;
-
-# A function that, given two stops, returns how many lines serve both stops.
-DROP FUNCTION IF EXISTS TwoSTops;
-DELIMITER //
-CREATE FUNCTION TwoStops(st1 INT, st2 INT) RETURNS INT
-BEGIN
-	DECLARE vAmountServed INT;
-    SET vAmountServed = 0;
-    SELECT COUNT(DISTINCT s1.BusLineID) 
-    INTO vAmountServed
-    FROM StopsOnLine s1
-    JOIN StopsOnLine s2 ON s1.BusLineID = s2.BusLineID
-	WHERE s1.StopID = st1 AND s2.StopID = st2;
-    
-    RETURN vAmountServed;
-    
-END//
-DELIMITER ;
-
-DELIMITER //
-
-CREATE PROCEDURE AddStop (IN vBusLineName VARCHAR(45), IN vStopName VARCHAR(45)) 
-BEGIN
-    DECLARE vStopID INT;        -- to hold StopID
-    DECLARE vBusLineID INT;     -- to hold BusLineID
-
-    main: BEGIN  -- Labeling the main block for use with LEAVE
-
-        -- Check if StopName exists in the BusStop table
-        SELECT StopID INTO vStopID FROM BusStop WHERE StopName = vStopName;
-        IF vStopID IS NULL THEN
-            SELECT 'Stop does not exist in BusStop table' AS Message; -- message that will pop up when stop does not exist
-            LEAVE main; -- Exit the procedure
-        END IF;
-
-        -- Check if BusLineName exists in the BusLine table
-        SELECT BusLineID INTO vBusLineID FROM BusLine WHERE BusLineName = vBusLineName; 
-        IF vBusLineID IS NULL THEN
-            SELECT 'Bus line does not exist in BusLine table' AS Message;
-            LEAVE main; -- Exit the procedure
-        END IF;
-
-        -- If stop does exist Check if the stop is already on the bus line's route
-        IF EXISTS (
-            SELECT 1
-            FROM StopsOnLine
-            WHERE BusLineID = vBusLineID AND StopID = vStopID
-        ) THEN
-            SELECT 'Stop already exists on this line' AS Message;
-            LEAVE main; -- Exit the procedure if the stop already exists on the line
-
-        ELSE
-            -- If it is not on the route, add the new stop
-            INSERT INTO StopsOnLine (BusLineID, BusLineName, StopID, StopName, StopOrder)
-            VALUES (
-                vBusLineID,
-                vBusLineName,
-                vStopID,
-                vStopName,
-                (SELECT MAX(StopOrder) + 1 FROM StopsOnLine WHERE BusLineID = vBusLineID)
-            );
-            SELECT 'Stop added to the route successfully' AS Message;
-        END IF; 
-
-    END main;  -- End of the labeled block
-
-END //
-
-DELIMITER ;
-
-
-
-CALL AddStop('300s', 'spiderman');
 
