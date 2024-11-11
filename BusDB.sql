@@ -861,3 +861,21 @@ BEGIN
 END //
 DELIMITER ;
 
+# A function that, given two stops, returns how many lines serve both stops.
+DROP FUNCTION IF EXISTS TwoSTops;
+DELIMITER //
+CREATE FUNCTION TwoStops(st1 INT, st2 INT) RETURNS INT
+BEGIN
+	DECLARE vAmountServed INT;
+    SET vAmountServed = 0;
+    SELECT COUNT(DISTINCT s1.BusLineID) 
+    INTO vAmountServed
+    FROM StopsOnLine s1
+    JOIN StopsOnLine s2 ON s1.BusLineID = s2.BusLineID
+	WHERE s1.StopID = st1 AND s2.StopID = st2;
+    
+    RETURN vAmountServed;
+    
+END//
+DELIMITER ;
+
