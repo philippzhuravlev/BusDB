@@ -197,72 +197,73 @@ VALUES
 INSERT INTO BusStop(BusStopName, GPSCoordinates)
 VALUES
 -- NB: ST_GeomFromText SQL statement is necessary for MySQL to interpret the insert as "geometric" data
-    ('Københavns Hovedbanegård', ST_GeomFromText('POINT(55.6761 12.5683)')),
-    ('Rådhuspladsen', ST_GeomFromText('POINT(55.6759 12.5655)')),
-    ('Nørreport', ST_GeomFromText('POINT(55.6838 12.5713)')),
-    ('Forum', ST_GeomFromText('POINT(55.6805 12.5523)')),
-    ('Frederiksberg Allé', ST_GeomFromText('POINT(55.6732 12.5469)')),
-    ('Åboulevard', ST_GeomFromText('POINT(55.6837 12.5448)')),
-    ('Falkoner Allé', ST_GeomFromText('POINT(55.6811 12.5354)')),
-    ('Flintholm St.', ST_GeomFromText('POINT(55.6821 12.5103)')),
-    ('Bellahøj', ST_GeomFromText('POINT(55.7067 12.5233)')),
-    ('Gladsaxe Trafikplads', ST_GeomFromText('POINT(55.7333 12.4894)')),
-    ('Østerport St.', ST_GeomFromText('POINT(55.6910 12.5939)')),
-    ('Svanemøllen St.', ST_GeomFromText('POINT(55.7026 12.5778)')),
-    ('Ryparken', ST_GeomFromText('POINT(55.7096 12.5735)')),
-    ('Lundtofteparken', ST_GeomFromText('POINT(55.7616 12.5084)')),
-    ('DTU', ST_GeomFromText('POINT(55.7856 12.5214)')),
-    ('Lyngby St.', ST_GeomFromText('POINT(55.7705 12.5033)')),
-    ('Holte St.', ST_GeomFromText('POINT(55.8144 12.4758)')),
-    ('Trianglen', ST_GeomFromText('POINT(55.6988 12.5836)')),
-    ('Østerbrogade', ST_GeomFromText('POINT(55.7052 12.5795)')),
-    ('Hellerup St.', ST_GeomFromText('POINT(55.7298 12.5644)')),
-    ('Ordrup', ST_GeomFromText('POINT(55.7476 12.5665)')),
-    ('Amagerbro St.', ST_GeomFromText('POINT(55.6612 12.6031)')),
-    ('Islands Brygge', ST_GeomFromText('POINT(55.6631 12.5899)')),
-    ('DR Byen', ST_GeomFromText('POINT(55.6587 12.5916)')),
-    ('Universitetet St.', ST_GeomFromText('POINT(55.6506 12.5902)')),
-    ('Vestamager', ST_GeomFromText('POINT(55.6316 12.5768)')),
-    ('Tårnby St.', ST_GeomFromText('POINT(55.6305 12.5992)')),
-    ('Kastrup', ST_GeomFromText('POINT(55.6179 12.6553)')),
-    ('Lufthavnen', ST_GeomFromText('POINT(55.6181 12.6568)')),
-    ('Amager Strand', ST_GeomFromText('POINT(55.6669 12.6253)')),
-    ('Christianshavn', ST_GeomFromText('POINT(55.6735 12.5914)')),
-    ('Nørrebro St.', ST_GeomFromText('POINT(55.7008 12.5353)')),
-    ('Bispebjerg St.', ST_GeomFromText('POINT(55.7116 12.5407)')),
-    ('Herlev St.', ST_GeomFromText('POINT(55.7247 12.4442)')),
-    ('Avedøre Station', ST_GeomFromText('POINT(55.6177 12.4746)')),
-    ('Friheden St.', ST_GeomFromText('POINT(55.6422 12.4763)')),
-    ('Hvidovrevej', ST_GeomFromText('POINT(55.6547 12.4878)')),
-    ('Valby St.', ST_GeomFromText('POINT(55.6617 12.5014)')),
-    ('Enghave Plads', ST_GeomFromText('POINT(55.6642 12.5483)')),
-    ('Nordhavn St.', ST_GeomFromText('POINT(55.7110 12.5913)')),
-    ('Gentofte St.', ST_GeomFromText('POINT(55.7518 12.5481)')),
-    ('Tingbjerg', ST_GeomFromText('POINT(55.7111 12.4927)')),
-    ('Brønshøj Torv', ST_GeomFromText('POINT(55.7033 12.5045)')),
-    ('Fælledparken', ST_GeomFromText('POINT(55.7011 12.5781)')),
-    ('Kongens Nytorv', ST_GeomFromText('POINT(55.6781 12.5821)')),
-    ('Lergravsparken St.', ST_GeomFromText('POINT(55.6639 12.6202)')),
-    ('Glostrup Station', ST_GeomFromText('POINT(55.6663 12.4049)')),
-    ('Brøndbyvester', ST_GeomFromText('POINT(55.6518 12.4117)')),
-    ('Brøndbyøster', ST_GeomFromText('POINT(55.6693 12.4204)')),
-    ('Rødovre Centrum', ST_GeomFromText('POINT(55.6844 12.4538)')),
-    ('Husum Torv', ST_GeomFromText('POINT(55.7118 12.4772)')),
-    ('Rigshospitalet', ST_GeomFromText('POINT(55.6954 12.5705)')),
-    ('Bispebjerg Hospital', ST_GeomFromText('POINT(55.7098 12.5422)')),
-    ('Ballerup St.', ST_GeomFromText('POINT(55.7317 12.3655)')),
-    ('Måløv', ST_GeomFromText('POINT(55.7479 12.3279)')),
-    ('Frederiksberg St.', ST_GeomFromText('POINT(55.6780 12.5307)')),
-    ('Fasanvej St.', ST_GeomFromText('POINT(55.6808 12.5188)')),
-    ('Lindevang', ST_GeomFromText('POINT(55.6836 12.5056)')),
-    ('Bella Center', ST_GeomFromText('POINT(55.6374 12.5775)')),
-    ('Ørestad St.', ST_GeomFromText('POINT(55.6290 12.5760)')),
-    ('Søndre Fasanvej', ST_GeomFromText('POINT(55.6587 12.4974)')),
-    ('Langgade St.', ST_GeomFromText('POINT(55.6622 12.4891)')),
-    ('Rødovre St.', ST_GeomFromText('POINT(55.6823 12.4531)')),
-    ('Hvidovre Hospital', ST_GeomFromText('POINT(55.6546 12.4845)')),
-    ('Sundbyvester Plads', ST_GeomFromText('POINT(55.6543 12.6028)')),
-    ('Vanløse St.', ST_GeomFromText('POINT(55.6836 12.4876)'));
+      ('Københavns Hovedbanegård', ST_GeomFromText('POINT(55.6761 12.5683)'))
+    , ('Rådhuspladsen', ST_GeomFromText('POINT(55.6759 12.5655)'))
+    , ('Nørreport', ST_GeomFromText('POINT(55.6838 12.5713)'))
+    , ('Forum', ST_GeomFromText('POINT(55.6805 12.5523)'))
+    , ('Frederiksberg Allé', ST_GeomFromText('POINT(55.6732 12.5469)'))
+    , ('Åboulevard', ST_GeomFromText('POINT(55.6837 12.5448)'))
+    , ('Falkoner Allé', ST_GeomFromText('POINT(55.6811 12.5354)'))
+    , ('Flintholm St.', ST_GeomFromText('POINT(55.6821 12.5103)'))
+    , ('Bellahøj', ST_GeomFromText('POINT(55.7067 12.5233)'))
+    , ('Gladsaxe Trafikplads', ST_GeomFromText('POINT(55.7333 12.4894)'))
+    , ('Østerport St.', ST_GeomFromText('POINT(55.6910 12.5939)'))
+    , ('Svanemøllen St.', ST_GeomFromText('POINT(55.7026 12.5778)'))
+    , ('Ryparken', ST_GeomFromText('POINT(55.7096 12.5735)'))
+    , ('Lundtofteparken', ST_GeomFromText('POINT(55.7616 12.5084)'))
+    , ('DTU', ST_GeomFromText('POINT(55.7856 12.5214)'))
+    , ('Lyngby St.', ST_GeomFromText('POINT(55.7705 12.5033)'))
+    , ('Holte St.', ST_GeomFromText('POINT(55.8144 12.4758)'))
+    , ('Trianglen', ST_GeomFromText('POINT(55.6988 12.5836)'))
+    , ('Østerbrogade', ST_GeomFromText('POINT(55.7052 12.5795)'))
+    , ('Hellerup St.', ST_GeomFromText('POINT(55.7298 12.5644)'))
+    , ('Ordrup', ST_GeomFromText('POINT(55.7476 12.5665)'))
+    , ('Amagerbro St.', ST_GeomFromText('POINT(55.6612 12.6031)'))
+    , ('Islands Brygge', ST_GeomFromText('POINT(55.6631 12.5899)'))
+    , ('DR Byen', ST_GeomFromText('POINT(55.6587 12.5916)'))
+    , ('Universitetet St.', ST_GeomFromText('POINT(55.6506 12.5902)'))
+    , ('Vestamager', ST_GeomFromText('POINT(55.6316 12.5768)'))
+    , ('Tårnby St.', ST_GeomFromText('POINT(55.6305 12.5992)'))
+    , ('Kastrup', ST_GeomFromText('POINT(55.6179 12.6553)'))
+    , ('Lufthavnen', ST_GeomFromText('POINT(55.6181 12.6568)'))
+    , ('Amager Strand', ST_GeomFromText('POINT(55.6669 12.6253)'))
+    , ('Christianshavn', ST_GeomFromText('POINT(55.6735 12.5914)'))
+    , ('Nørrebro St.', ST_GeomFromText('POINT(55.7008 12.5353)'))
+    , ('Bispebjerg St.', ST_GeomFromText('POINT(55.7116 12.5407)'))
+    , ('Herlev St.', ST_GeomFromText('POINT(55.7247 12.4442)'))
+    , ('Avedøre Station', ST_GeomFromText('POINT(55.6177 12.4746)'))
+    , ('Friheden St.', ST_GeomFromText('POINT(55.6422 12.4763)'))
+    , ('Hvidovrevej', ST_GeomFromText('POINT(55.6547 12.4878)'))
+    , ('Valby St.', ST_GeomFromText('POINT(55.6617 12.5014)'))
+    , ('Enghave Plads', ST_GeomFromText('POINT(55.6642 12.5483)'))
+    , ('Nordhavn St.', ST_GeomFromText('POINT(55.7110 12.5913)'))
+    , ('Gentofte St.', ST_GeomFromText('POINT(55.7518 12.5481)'))
+    , ('Tingbjerg', ST_GeomFromText('POINT(55.7111 12.4927)'))
+    , ('Brønshøj Torv', ST_GeomFromText('POINT(55.7033 12.5045)'))
+    , ('Fælledparken', ST_GeomFromText('POINT(55.7011 12.5781)'))
+    , ('Kongens Nytorv', ST_GeomFromText('POINT(55.6781 12.5821)'))
+    , ('Lergravsparken St.', ST_GeomFromText('POINT(55.6639 12.6202)'))
+    , ('Glostrup Station', ST_GeomFromText('POINT(55.6663 12.4049)'))
+    , ('Brøndbyvester', ST_GeomFromText('POINT(55.6518 12.4117)'))
+    , ('Brøndbyøster', ST_GeomFromText('POINT(55.6693 12.4204)'))
+    , ('Rødovre Centrum', ST_GeomFromText('POINT(55.6844 12.4538)'))
+    , ('Husum Torv', ST_GeomFromText('POINT(55.7118 12.4772)'))
+    , ('Rigshospitalet', ST_GeomFromText('POINT(55.6954 12.5705)'))
+    , ('Bispebjerg Hospital', ST_GeomFromText('POINT(55.7098 12.5422)'))
+    , ('Ballerup St.', ST_GeomFromText('POINT(55.7317 12.3655)'))
+    , ('Måløv', ST_GeomFromText('POINT(55.7479 12.3279)'))
+    , ('Frederiksberg St.', ST_GeomFromText('POINT(55.6780 12.5307)'))
+    , ('Fasanvej St.', ST_GeomFromText('POINT(55.6808 12.5188)'))
+    , ('Lindevang', ST_GeomFromText('POINT(55.6836 12.5056)'))
+    , ('Bella Center', ST_GeomFromText('POINT(55.6374 12.5775)'))
+    , ('Ørestad St.', ST_GeomFromText('POINT(55.6290 12.5760)'))
+    , ('Søndre Fasanvej', ST_GeomFromText('POINT(55.6587 12.4974)'))
+    , ('Langgade St.', ST_GeomFromText('POINT(55.6622 12.4891)'))
+    , ('Rødovre St.', ST_GeomFromText('POINT(55.6823 12.4531)'))
+    , ('Hvidovre Hospital', ST_GeomFromText('POINT(55.6546 12.4845)'))
+    , ('Sundbyvester Plads', ST_GeomFromText('POINT(55.6543 12.6028)'))
+    , ('Vanløse St.', ST_GeomFromText('POINT(55.6836 12.4876)'))
+    ;
 
 INSERT INTO BusLine(BusLineName, StopOnBusLine, FinalDestination, StopOrder)
 VALUES
@@ -403,17 +404,17 @@ INSERT INTO Ride(StartDate, StartTime, Duration, IDCardNumber, BusLineName, Star
 VALUES
 	  ('2024-11-01', '08:30:00', 15, '234567 890 234 567 2', '6A', 'Københavns Hovedbanegård', 'DTU')
 	, ('2024-11-01', '09:00:00', 10, '345678 901 345 678 3', '6A', 'Rådhuspladsen', 'Nørreport')
-	, ('2024-11-02', '07:45:00', 20, '456789 012 456 789 4', '6A', 'DTU', 'Københavns Hovedbanegård')
+	, ('2024-11-02', '07:45:00', 20, '456789 012 456 789 4', '6A', 'Kastrup', 'Københavns Hovedbanegård')
 	, ('2024-11-02', '08:15:00', 12, '567890 123 567 890 5', '300S', 'Københavns Hovedbanegård', 'Lyngby St.')
 	, ('2024-11-02', '08:45:00', 25, '678901 234 678 901 6', '150S', 'Nørreport', 'Ordrup')
 	, ('2024-11-02', '09:15:00', 30, '789012 345 789 012 7', '600S', 'Amagerbro St.', 'Vestamager')
-	, ('2024-11-02', '09:30:00', 18, '890123 456 890 123 8', '5C', 'Christianshavn', 'Lufthavnen')
-	, ('2024-11-02', '10:00:00', 14, '901234 567 901 234 9', '1A', 'Valby St.', 'Gentofte St.')
+	, ('2024-11-02', '09:30:00', 18, '890123 456 890 123 8', '5C', 'Kastrup', 'Lufthavnen')
+	, ('2024-11-02', '10:00:00', 14, '901234 567 901 234 9', '1A', 'Vestamager', 'Gentofte St.')
 	, ('2024-11-02', '10:15:00', 12, '012345 678 012 345 1', '2A', 'Tingbjerg', 'Kongens Nytorv')
 	, ('2024-11-02', '11:00:00', 35, '123456 789 123 456 2', '9A', 'Glostrup Station', 'Ordrup')
-	, ('2024-11-02', '11:30:00', 15, '234567 890 234 567 3', '350S', 'Ballerup St.', 'Lindevang')
+	, ('2024-11-02', '11:30:00', 15, '234567 890 234 567 3', '350S', 'Vanløse St.', 'Lindevang')
 	, ('2024-11-02', '12:00:00', 28, '345678 901 345 678 4', '250S', 'Bella Center', 'Langgade St.')
-	, ('2024-11-02', '12:15:00', 20, '456789 012 456 789 5', '7A', 'Rødovre St.', 'Enghave Plads')
+	, ('2024-11-02', '12:15:00', 20, '456789 012 456 789 5', '7A', 'Ordrup', 'Enghave Plads')
 	, ('2024-11-02', '12:30:00', 18, '567890 123 567 890 6', '33', 'Sundbyvester Plads', 'Vanløse St.')
 	, ('2024-11-02', '13:00:00', 15, '678901 234 678 901 7', '6A', 'Flintholm St.', 'Københavns Hovedbanegård')
 	, ('2024-11-03', '08:00:00', 25, '789012 345 789 012 8', '300S', 'Københavns Hovedbanegård', 'Holte St.')
@@ -453,55 +454,44 @@ VALUES
     ;
 
 -- Get all passenger id's where their ride started at the first stop on a bus line.
-SELECT PassengerID FROM Ride
-JOIN 
-    StopsOnLine AS StartStopLine 
-    ON Ride.BusLineName = StartStopLine.BusLineName
-    AND Ride.StartStop = StartStopLine.StopName
-WHERE StopOrder = 1;
+SELECT DISTINCT R.IDCardNumber FROM Ride R
+JOIN BusLine BL
+    ON R.BusLineName = BL.BusLineName 
+    AND R.StartStop = BL.StopOnBusLine
+WHERE BL.StopOrder = 1;
 
 -- Get the name of the bus stop served by the most bus lines.
 # Without Counter
-SELECT StopName FROM StopsOnLine
-GROUP BY StopID, StopName
+SELECT StopOnBusLine, COUNT(*)
+FROM BusLine
+GROUP BY StopOnBusLine
 HAVING COUNT(*) = (
 	SELECT MAX(StopCount)
-    FROM (
+	FROM (
 		SELECT COUNT(*) AS StopCount
-        FROM StopsOnLine
-        GROUP BY StopID
+        FROM BusLine
+        GROUP BY StopOnBusLine
 	) AS Count
 );
 
-# With Counter
-SELECT StopName, COUNT(*) FROM StopsOnLine
-GROUP BY StopID, StopName
-HAVING COUNT(*) = (
-	SELECT MAX(StopCount)
-    FROM (
-		SELECT COUNT(*) AS StopCount
-        FROM StopsOnLine
-        GROUP BY StopID
-	) AS Count
-);
 
 -- For each line, get the ID of the passenger who took the ride that lasted longer.
-SELECT PassengerID, BusLineName, Duration FROM Ride AS OuterRide
+SELECT IDCardNumber, BusLineName, Duration FROM Ride AS OuterRide
 WHERE Duration = (
 	SELECT MAX(Duration) FROM Ride AS InnerRide
     WHERE InnerRide.BusLineName = OuterRide.BusLineName);
 # Erhm det her giver alle id'er der har taget den længste tur på en BusLine og ikke kun en enkelt. Tænker det var det de ville have. Even tho der ikke står "passengers" men "passenger". Men altså hvad nu hvis der var flere der havde kørt den samme tid du forstår yeh
 
 # The ID of the passengers who never took a bus line more than once per day.
-SELECT DISTINCT PassengerID FROM Ride
-GROUP BY StartDate, PassengerID
+SELECT DISTINCT IDCardNumber FROM Ride
+GROUP BY StartDate, IDCardNumber
 HAVING COUNT(*) = 1;
 
 
 -- Get the name of the bus stops that are never used, that is, they are neither the start nor the end stop for any ride.
-SELECT StopName FROM BusStop
-WHERE StopName NOT IN (SELECT StartStop FROM Ride)
-AND StopName NOT IN (SELECT EndStop FROM Ride);
+SELECT BusStopName FROM BusStop
+WHERE BusStopName NOT IN (SELECT StartStop FROM Ride)
+AND BusStopName NOT IN (SELECT EndStop FROM Ride);
 
 -- A trigger that prevents inserting a ride starting and ending at the same stop, or at a stop not served by that line. 
 DROP TRIGGER IF EXISTS Ride_Before_Insert;
@@ -520,8 +510,8 @@ BEGIN
     
     # check if StartStop is served by the given Bus Line
     IF NOT EXISTS (
-		SELECT StopName FROM StopsOnLine
-        WHERE NEW.StartStop = StopName AND NEW.BusLineName = BusLineName)
+		SELECT BusStopName FROM BusLine
+        WHERE NEW.StartStop = StopOnBusLine AND NEW.BusLineName = BusLineName)
 	THEN 
 		SIGNAL SQLSTATE '45000'
 		SET MESSAGE_TEXT = 'The StartStop is not served by the BusLineName';
@@ -529,8 +519,8 @@ BEGIN
     
     # check if EndStop is served by the given Bus Line
     IF NOT EXISTS (
-		SELECT StopName FROM StopsOnLine
-        WHERE NEW.EndStop = StopName AND NEW.BusLineName = BusLineName)
+		SELECT BusStopName FROM BusLine
+        WHERE NEW.EndStop = StopOnBusLine AND NEW.BusLineName = BusLineName)
 	THEN 
 		SIGNAL SQLSTATE '45000'
 		SET MESSAGE_TEXT = 'The EndStop is not served by the BusLineName';
@@ -539,17 +529,16 @@ END //
 DELIMITER ;
 
 -- A function that, given two stops, returns how many lines serve both stops.
-DROP FUNCTION IF EXISTS TwoSTops;
+DROP FUNCTION IF EXISTS TwoStops;
 DELIMITER //
-CREATE FUNCTION TwoStops(st1 INT, st2 INT) RETURNS INT
+CREATE FUNCTION TwoStops(st1 VARCHAR(50), st2 VARCHAR(50)) RETURNS INT
 BEGIN
-	DECLARE vAmountServed INT;
-    SET vAmountServed = 0;
-    SELECT COUNT(DISTINCT s1.BusLineID) 
+	DECLARE vAmountServed INT DEFAULT 0;
+    SELECT COUNT(DISTINCT s1.BusLineName) 
     INTO vAmountServed
-    FROM StopsOnLine s1
-    JOIN StopsOnLine s2 ON s1.BusLineID = s2.BusLineID
-	WHERE s1.StopID = st1 AND s2.StopID = st2;
+    FROM BusLine s1
+    JOIN BusLine s2 ON s1.BusLineName = s2.BusLineName
+	WHERE s1.StopOnBusLine = st1 AND s2.StopOnBusLine = st2;
     
     RETURN vAmountServed;
     
@@ -559,14 +548,14 @@ DELIMITER //
 
 CREATE PROCEDURE AddStop (IN vBusLineName VARCHAR(45), IN vStopName VARCHAR(45)) 
 BEGIN
-    DECLARE vStopID INT;        -- var to hold StopID
-    DECLARE vBusLineID INT;     -- var to hold BusLineID
+    DECLARE vStopExists INT DEFAULT 0; -- var to hold StopID
+    DECLARE vBusLineExists INT DEFAULT 0;     -- var to hold BusLineID
 
     main: BEGIN  -- Labeling the main block for use with LEAVE
 
         -- Check if StopName exists in the BusStop table
-        SELECT StopID INTO vStopID FROM BusStop WHERE StopName = vStopName;
-        IF vStopID IS NULL THEN
+        SELECT BusStopName INTO vStopExists FROM BusStop WHERE BusStopName = vStopName;
+        IF vStopExists IS NULL THEN
             SELECT 'Stop does not exist in BusStop table' AS Message; -- message that will pop up when stop does not exist
             LEAVE main; -- Exit the procedure
         END IF;
