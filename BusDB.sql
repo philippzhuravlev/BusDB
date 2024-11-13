@@ -53,11 +53,13 @@ CREATE TABLE Ride
 	, Duration      	INT
 	, IDCardNumber   	VARCHAR(20)
 	, BusLineName   	VARCHAR(5)
+    , FinalDestination	VARCHAR(50)
 	, StartStop     	VARCHAR(50)
 	, EndStop       	VARCHAR(50)
     , PRIMARY KEY		(StartDate, StartTime, IDCardNumber)
 	, FOREIGN KEY		(IDCardNumber)	REFERENCES Passenger(IDCardNumber)
 	, FOREIGN KEY 		(BusLineName)	REFERENCES BusLine(BusLineName)
+    , FOREIGN KEY		(FinalDestination)	REFERENCES	BusStop(BusStopName)
 	, FOREIGN KEY 		(StartStop)		REFERENCES BusStop(BusStopName)
 	, FOREIGN KEY 		(EndStop)		REFERENCES BusStop(BusStopName)
 	);
@@ -400,7 +402,7 @@ VALUES
 	, ('33', 'Rødovre Centrum', 'Rødovre Centrum', 10)
     ;
 
-INSERT INTO Ride(StartDate, StartTime, Duration, IDCardNumber, BusLineName, StartStop, EndStop) 
+/*INSERT INTO Ride(StartDate, StartTime, Duration, IDCardNumber, BusLineName, StartStop, EndStop) 
 VALUES
 	  ('2024-11-01', '08:30:00', 15, '234567 890 234 567 2', '6A', 'Københavns Hovedbanegård', 'DTU')
 	, ('2024-11-01', '09:00:00', 10, '345678 901 345 678 3', '6A', 'Rådhuspladsen', 'Nørreport')
@@ -451,7 +453,61 @@ VALUES
 	, ('2024-11-04', '11:00:00', 22, '890123 456 890 123 3', '350S', 'Bispebjerg Hospital', 'Forum')
 	, ('2024-11-04', '11:15:00', 28, '901234 567 901 234 4', '250S', 'Amager Strand', 'Rådhuspladsen')
 	, ('2024-11-04', '11:30:00', 14, '012345 678 012 345 5', '7A', 'Valby St.', 'Nordhavn St.')
-    ;
+    ;*/
+    
+INSERT INTO Ride(StartDate, StartTime, Duration, IDCardNumber, BusLineName, FinalDestination, StartStop, EndStop) 
+VALUES
+	  ('2024-11-01', '08:30:00', 15, '234567 890 234 567 2', '6A', 'Gladsaxe Trafikplads', 'Københavns Hovedbanegård', 'DTU')
+	, ('2024-11-01', '09:00:00', 10, '345678 901 345 678 3', '6A', 'Gladsaxe Trafikplads', 'Rådhuspladsen', 'Nørreport')
+	, ('2024-11-02', '07:45:00', 20, '456789 012 456 789 4', '6A', 'Gladsaxe Trafikplads', 'Kastrup', 'Københavns Hovedbanegård')
+	, ('2024-11-02', '08:15:00', 12, '567890 123 567 890 5', '300S', 'Holte St.', 'Københavns Hovedbanegård', 'Lyngby St.')
+	, ('2024-11-02', '08:45:00', 25, '678901 234 678 901 6', '150S', 'Ordrup', 'Nørreport', 'Ordrup')
+	, ('2024-11-02', '09:15:00', 30, '789012 345 789 012 7', '600S', 'Kastrup', 'Amagerbro St.', 'Vestamager')
+	, ('2024-11-02', '09:30:00', 18, '890123 456 890 123 8', '5C', 'Herlev St.', 'Kastrup', 'Lufthavnen')
+	, ('2024-11-02', '10:00:00', 14, '901234 567 901 234 9', '1A', 'Gentofte St.', 'Vestamager', 'Gentofte St.')
+	, ('2024-11-02', '10:15:00', 12, '012345 678 012 345 1', '2A', 'Lergravsparken St.', 'Tingbjerg', 'Kongens Nytorv')
+	, ('2024-11-02', '11:00:00', 35, '123456 789 123 456 2', '9A', 'Rødovre Centrum', 'Glostrup Station', 'Ordrup')
+	, ('2024-11-02', '11:30:00', 15, '234567 890 234 567 3', '350S', 'Lindevang', 'Vanløse St.', 'Lindevang')
+	, ('2024-11-02', '12:00:00', 28, '345678 901 345 678 4', '250S', 'Langgade St.', 'Bella Center', 'Langgade St.')
+	, ('2024-11-02', '12:15:00', 20, '456789 012 456 789 5', '7A', 'Hellerup St.', 'Ordrup', 'Enghave Plads')
+	, ('2024-11-02', '12:30:00', 18, '567890 123 567 890 6', '33', 'Rødovre Centrum', 'Sundbyvester Plads', 'Vanløse St.')
+	, ('2024-11-02', '13:00:00', 15, '678901 234 678 901 7', '6A', 'Gladsaxe Trafikplads', 'Flintholm St.', 'Københavns Hovedbanegård')
+	, ('2024-11-03', '08:00:00', 25, '789012 345 789 012 8', '300S', 'Holte St.', 'Københavns Hovedbanegård', 'Holte St.')
+	, ('2024-11-03', '08:20:00', 18, '890123 456 890 123 9', '150S', 'Ordrup', 'Rådhuspladsen', 'Trianglen')
+	, ('2024-11-03', '08:30:00', 20, '901234 567 901 234 1', '600S', 'Kastrup', 'DR Byen', 'Kastrup')
+	, ('2024-11-03', '08:45:00', 15, '012345 678 012 345 2', '5C', 'Herlev St.', 'Rådhuspladsen', 'Amagerbro St.')
+	, ('2024-11-03', '09:00:00', 15, '123456 789 123 456 3', '1A', 'Gentofte St.', 'Nordhavn St.', 'Hvidovrevej')
+	, ('2024-11-03', '09:15:00', 10, '234567 890 234 567 4', '2A', 'Lergravsparken St.', 'Brønshøj Torv', 'Amagerbro St.')
+	, ('2024-11-03', '09:30:00', 25, '345678 901 345 678 5', '9A', 'Rødovre Centrum', 'Rødovre Centrum', 'Rigshospitalet')
+	, ('2024-11-03', '09:45:00', 18, '456789 012 456 789 6', '350S', 'Lindevang', 'Frederiksberg St.', 'Måløv')
+	, ('2024-11-03', '10:00:00', 16, '567890 123 567 890 7', '250S', 'Langgade St.', 'Bella Center', 'Amager Strand')
+	, ('2024-11-03', '10:15:00', 30, '678901 234 678 901 8', '7A', 'Hellerup St.', 'Hvidovre Hospital', 'Nørrebro St.')
+	, ('2024-11-03', '10:30:00', 20, '789012 345 789 012 9', '33', 'Rødovre Centrum', 'Vanløse St.', 'Christianshavn')
+	, ('2024-11-03', '11:00:00', 12, '890123 456 890 123 1', '6A', 'Gladsaxe Trafikplads', 'Københavns Hovedbanegård', 'Frederiksberg Allé')
+	, ('2024-11-03', '11:15:00', 30, '901234 567 901 234 2', '300S', 'Holte St.', 'Københavns Hovedbanegård', 'Svanemøllen St.')
+	, ('2024-11-03', '11:30:00', 10, '012345 678 012 345 3', '150S', 'Ordrup', 'Trianglen', 'Hellerup St.')
+	, ('2024-11-03', '12:00:00', 18, '123456 789 123 456 4', '600S', 'Kastrup', 'Christianshavn', 'Tårnby St.')
+	, ('2024-11-03', '12:15:00', 12, '234567 890 234 567 5', '5C', 'Herlev St.', 'Lufthavnen', 'Kastrup')
+	, ('2024-11-03', '12:30:00', 10, '345678 901 345 678 6', '1A', 'Gentofte St.', 'Friheden St.', 'Gentofte St.')
+	, ('2024-11-03', '12:45:00', 22, '456789 012 456 789 7', '2A', 'Lergravsparken St.', 'Nørrebro St.', 'Kongens Nytorv')
+	, ('2024-11-03', '13:00:00', 15, '567890 123 567 890 8', '9A', 'Rødovre Centrum', 'Glostrup Station', 'Bispebjerg Hospital')
+	, ('2024-11-03', '13:15:00', 25, '678901 234 678 901 9', '350S', 'Lindevang', 'Ballerup St.', 'Nørrebro St.')
+	, ('2024-11-03', '13:30:00', 10, '789012 345 789 012 1', '250S', 'Langgade St.', 'Langgade St.', 'Ørestad St.')
+	, ('2024-11-03', '14:00:00', 10, '890123 456 890 123 2', '7A', 'Hellerup St.', 'Enghave Plads', 'Vanløse St.')
+	, ('2024-11-04', '08:15:00', 12, '901234 567 901 234 3', '33', 'Rødovre Centrum', 'Københavns Hovedbanegård', 'Rådhuspladsen')
+	, ('2024-11-04', '08:30:00', 12, '012345 678 012 345 4', '6A', 'Gladsaxe Trafikplads', 'Nørreport', 'Københavns Hovedbanegård')
+	, ('2024-11-04', '08:45:00', 10, '123456 789 123 456 5', '300S', 'Holte St.', 'Svanemøllen St.', 'Holte St.')
+	, ('2024-11-04', '09:00:00', 12, '234567 890 234 567 6', '150S', 'Ordrup', 'Nørreport', 'Nørreport')
+	, ('2024-11-04', '09:30:00', 15, '345678 901 345 678 7', '600S', 'Kastrup', 'DR Byen', 'Islands Brygge')
+	, ('2024-11-04', '09:45:00', 10, '456789 012 456 789 8', '5C', 'Herlev St.', 'Christianshavn', 'Amagerbro St.')
+	, ('2024-11-04', '10:00:00', 12, '567890 123 567 890 9', '1A', 'Gentofte St.', 'Enghave Plads', 'Friheden St.')
+	, ('2024-11-04', '10:30:00', 25, '678901 234 678 901 1', '2A', 'Lergravsparken St.', 'Brønshøj Torv', 'Fælledparken')
+	, ('2024-11-04', '10:45:00', 20, '789012 345 789 012 2', '9A', 'Rødovre Centrum', 'Herlev St.', 'Rigshospitalet')
+	, ('2024-11-04', '11:00:00', 22, '890123 456 890 123 3', '350S', 'Lindevang', 'Bispebjerg Hospital', 'Forum')
+	, ('2024-11-04', '11:15:00', 28, '901234 567 901 234 4', '250S', 'Langgade St.', 'Amager Strand', 'Rådhuspladsen')
+	, ('2024-11-04', '11:30:00', 14, '012345 678 012 345 5', '7A', 'Hellerup St.', 'Valby St.', 'Nordhavn St.')
+	;
+
 
 -- Get all passenger id's where their ride started at the first stop on a bus line.
 SELECT DISTINCT R.IDCardNumber FROM Ride R
@@ -544,47 +600,57 @@ BEGIN
     
 END//
 DELIMITER ;
-DELIMITER //
 
+DROP PROCEDURE IF EXISTS AddStop;
+DELIMITER //
 CREATE PROCEDURE AddStop (IN vBusLineName VARCHAR(45), IN vStopName VARCHAR(45)) 
 BEGIN
-    DECLARE vStopExists INT DEFAULT 0; -- var to hold StopID
-    DECLARE vBusLineExists INT DEFAULT 0;     -- var to hold BusLineID
+    DECLARE vStopExists VARCHAR(45) DEFAULT NULL; -- var to hold StopID
+    DECLARE vBusLineExists VARCHAR(45) DEFAULT NULL;     -- var to hold BusLineID
+    DECLARE vFinalDestination VARCHAR(50);
+    DECLARE vMaxStopOrder INT;
 
     main: BEGIN  -- Labeling the main block for use with LEAVE
 
         -- Check if StopName exists in the BusStop table
         SELECT BusStopName INTO vStopExists FROM BusStop WHERE BusStopName = vStopName;
         IF vStopExists IS NULL THEN
-            SELECT 'Stop does not exist in BusStop table' AS Message; -- message that will pop up when stop does not exist
-            LEAVE main; -- Exit the procedure
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Stop does not exist in BusStop table';
+            LEAVE main;
         END IF;
 
         -- Check if BusLineName exists in the BusLine table
-        SELECT BusLineID INTO vBusLineID FROM BusLine WHERE BusLineName = vBusLineName; 
-        IF vBusLineID IS NULL THEN
-            SELECT 'Bus line does not exist in BusLine table' AS Message;
-            LEAVE main; -- Exit the procedure
+        SELECT BusLineName INTO vBusLineExists FROM BusLine WHERE BusLineName = vBusLineName
+        LIMIT 1;
+        IF vBusLineExists IS NULL THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Bus line does not exist in BusLine table';
+            LEAVE main;
         END IF;
 
         -- If stop does exist Check if the stop is already on the bus line's route
         IF EXISTS (
             SELECT 1
-            FROM StopsOnLine
-            WHERE BusLineID = vBusLineID AND StopID = vStopID
+            FROM BusLine
+            WHERE BusLineName = vBusLineName AND StopOnBusLine = vStopName
         ) THEN
-            SELECT 'Stop already exists on this line' AS Message;
-            LEAVE main; -- Exit the procedure if the stop already exists on the line
-
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Stop already exists on this line';
+            LEAVE main;
         ELSE
             -- If it is not on the route, add the new stop
-            INSERT INTO StopsOnLine (BusLineID, BusLineName, StopID, StopName, StopOrder)
+            SELECT FinalDestination, MAX(StopOrder) + 1
+			INTO vFinalDestination, vMaxStopOrder
+			FROM BusLine
+			WHERE BusLineName = vBusLineName;
+            
+            INSERT INTO BusLine (BusLineName, FinalDestination, StopOrder, StopOnBusLine)
             VALUES (
-                vBusLineID,
                 vBusLineName,
-                vStopID,
-                vStopName,
-                (SELECT MAX(StopOrder) + 1 FROM StopsOnLine WHERE BusLineID = vBusLineID)
+                vFinalDestination,
+				vMaxStopOrder,
+                vStopName
             );
             SELECT 'Stop added to the route successfully' AS Message;
         END IF; 
@@ -594,5 +660,17 @@ BEGIN
 END //
 DELIMITER ;
 
-CALL AddStop('300s', 'Gl. Holte Øverødvej');
+# Adding a Stop That Exists and Is Not Already on the Line
+CALL AddStop('6A', 'Lyngby St.');
 
+# Adding a Stop That Does Not Exist in BusStop
+CALL AddStop('6A', 'NonExistent Stop');
+
+# Adding a Stop That Is Already on the Line
+CALL AddStop('6A', 'Nørreport');
+
+# Adding a Stop to a Non-Existent Bus Line
+CALL AddStop('10B', 'Forum');
+
+# Adding a Stop to Extend the Line
+CALL AddStop('6A', 'Hellerup St.');
