@@ -15,63 +15,56 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 
 CREATE TABLE Address
-	( AddressID        INT AUTO_INCREMENT PRIMARY KEY
-	, Street           VARCHAR(50) 
-	, City             VARCHAR(50) 
-	, Zipcode          VARCHAR(10) # would be INT, but some countries use a dash ("12345-6789"). Same below.
-	, CivicNumber      VARCHAR(10) # NB: A number assigned to each plot of land. DK: Matrikelnummer, 5 ints
-	, Country          VARCHAR(30) # on case users type full country name ("Democratic Republic of Congo")
+	( AddressID         INT AUTO_INCREMENT -- must be an auto_increment, otherwise you need 3-4 primary keys
+	, Street            VARCHAR(50) 
+	, City              VARCHAR(50) 
+	, Zipcode           VARCHAR(10) -- would be INT, but some countries use a dash ("12345-6789"). Same below.
+	, CivicNumber       VARCHAR(10) -- NB: A number assigned to each plot of land. DK: Matrikelnummer, 5 ints
+	, Country           VARCHAR(30) -- on case users type full country name ("Democratic Republic of Congo")
+    , PRIMARY KEY		(AddressID)
     );
 
 CREATE TABLE Passenger
-	( PassengerID		INT AUTO_INCREMENT PRIMARY KEY
+	( IDCardNumber		INT			-- auto_increment not necessary. Compare rejsekort's format: "123456 789 123 456 7"
     , Email				VARCHAR(50) 
-    , Fullname			VARCHAR(50) # not worth splitting up into first and last name due to middle names
-    , PhoneNumber		VARCHAR(20) # longest phone number is 17. Varchar due to "+45" etc
+    , FirstName			VARCHAR(50) -- also includes middle name
+    , LastName			VARCHAR(20)
+    , PhoneNumber		VARCHAR(20) -- longest phone number is 17 chars. Varchar due to "+45" etc
     , AddressID			INT
-    , FOREIGN KEY		(AddressID) 	REFERENCES 	Address(AddressID)
+    , PRIMARY KEY		(IDCardNumber)
+    , FOREIGN KEY		(AddressID)			REFERENCES 	Address(AddressID)
     ); 
 
 CREATE TABLE BusStop
-	( StopID			INT AUTO_INCREMENT PRIMARY KEY
-    , StopName			VARCHAR(45) UNIQUE # longest stop name is 43 char
-	, GPSCoordinates	POINT # contains latitude, longitude. Can be split.
+	( BusStopName		VARCHAR(50) -- longest stop name in DK is 43 char
+	, GPSCoordinates	POINT		-- contains latitude and longitude
+    , PRIMARY KEY		(BusStopName)
 	);
 
 CREATE TABLE BusLine
-	( BusLineID			INT AUTO_INCREMENT PRIMARY KEY
-    , BusLineName		VARCHAR(5) UNIQUE # e.g. 6A, 300S
-	, FinalDestination	VARCHAR(45) # compare 6A Buddinge vs 6A Emdrup Torv. Can be combined into BusLineName
-    #, StopName			VARCHAR(45)
-    #, FOREIGN KEY		(StopName)		REFERENCES	BusStop(StopName)
+	( BusLineName		VARCHAR(5) 	-- e.g. 6A, 300S
+    , StopOnBusLine		VARCHAR(50)	
+	, FinalDestination	VARCHAR(50) -- compare 6A Buddinge vs 6A Emdrup Torv. Can be combined into BusLineName
+    , StopOrder			INT			-- i.e. 1st stop, 2nd stop, 3rd stop etc
+    , PRIMARY KEY		(BusLineName, FinalDestination)
+    , FOREIGN KEY		(FinalDestination)	REFERENCES	BusStop(BusStopName)
+    , FOREIGN KEY		(StopOnBusLine)		REFERENCES	BusStop(BusStopName)
 	);
 
-CREATE TABLE StopsOnLine
-	( StopsOnLineID		INT AUTO_INCREMENT PRIMARY KEY
-	, BusLineID			INT
-    , BusLineName		VARCHAR(45)
-	, StopID			INT
-    , StopName			VARCHAR(45)
-    , StopOrder			INT
-    , FOREIGN KEY		(BusLineID) 	REFERENCES 	BusLine(BusLineID) 
-    , FOREIGN KEY		(BusLineName)	REFERENCES	BusLine(BusLineName)
-    , FOREIGN KEY		(StopID) 		REFERENCES 	BusStop(StopID) 
-    , FOREIGN KEY		(StopName)		REFERENCES	BusStop(StopName)
-    );   
-
 CREATE TABLE Ride
-	( RideID        	INT AUTO_INCREMENT PRIMARY KEY
-	, StartDate     	DATE
+	# RideID            AUTO_INCREMENT	PRIMARY KEY	-- to support two trips on the same rejsekort, a RideID is necessary
+	( StartDate     	DATE
 	, StartTime     	TIME
 	, Duration      	INT
-	, PassengerID   	INT
+	, IDCardNumber   	INT
 	, BusLineName   	VARCHAR(5)
-	, StartStop     	VARCHAR(45)
-	, EndStop       	VARCHAR(45)
-	, FOREIGN KEY		(PassengerID)	REFERENCES Passenger(PassengerID)
+	, StartStop     	VARCHAR(50)
+	, EndStop       	VARCHAR(50)
+    , PRIMARY KEY		(StartDate, StartTime, IDCardNumber)
+	, FOREIGN KEY		(IDCardNumber)	REFERENCES Passenger(IDCardNumber)
 	, FOREIGN KEY 		(BusLineName)	REFERENCES BusLine(BusLineName)
-	, FOREIGN KEY 		(StartStop)		REFERENCES BusStop(StopName)
-	, FOREIGN KEY 		(EndStop)		REFERENCES BusStop(StopName)
+	, FOREIGN KEY 		(StartStop)		REFERENCES BusStop(BusStopName)
+	, FOREIGN KEY 		(EndStop)		REFERENCES BusStop(BusStopName)
 	);
     
 INSERT INTO Address (Street, City, Zipcode, CivicNumber, Country)
