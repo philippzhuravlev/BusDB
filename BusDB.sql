@@ -454,3 +454,10 @@ VALUES
 	, ('2024-11-04', '11:15:00', 28, '901234 567 901 234 4', '250S', 'Langgade St.', 'Amager Strand', 'Rådhuspladsen')
 	, ('2024-11-04', '11:30:00', 14, '012345 678 012 345 5', '7A', 'Hellerup St.', 'Valby St.', 'Nordhavn St.')
 	;
+
+SHOW TABLES;
+SELECT * FROM Address;
+SELECT * FROM BusLine;
+SELECT * FROM BusStop;
+SELECT * FROM Passenger;
+SELECT * FROM Ride;
