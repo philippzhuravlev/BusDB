@@ -25,9 +25,9 @@ CREATE TABLE Passenger
     , FirstName			VARCHAR(50) -- also includes middle name
     , LastName			VARCHAR(20)
     , PhoneNumber		VARCHAR(20) -- longest phone number is 17 chars. Varchar due to plus sign in "+45" etc
-    , AddressID			INT
+    , AddressID			INT 
     , PRIMARY KEY		(IDCardNumber)
-    , FOREIGN KEY		(AddressID)			REFERENCES 	Address(AddressID)
+    , FOREIGN KEY		(AddressID)			REFERENCES 	Address(AddressID) 	ON DELETE CASCADE
     ); 
 
 CREATE TABLE BusStop
@@ -40,10 +40,10 @@ CREATE TABLE BusLine
 	( BusLineName		VARCHAR(5) 	-- e.g. 6A, 300S
 	, FinalDestination	VARCHAR(50) -- compare 6A Buddinge vs 6A Emdrup Torv
     , StopOrder			INT			-- 1., 2., 3. stop etc. Primary key since busline contains all stops on lines
-    , BusStop			VARCHAR(50)	-- all bus stops on the line, so DTU -> Lyngby -> Hellerup etc
+    , BusStopName		VARCHAR(50)	-- all bus stops on the line, so DTU -> Lyngby -> Hellerup etc
     , PRIMARY KEY		(BusLineName, FinalDestination, StopOrder)
-    , FOREIGN KEY		(FinalDestination)	REFERENCES	BusStop(BusStopName)
-    , FOREIGN KEY		(BusStop)			REFERENCES	BusStop(BusStopName)
+    , FOREIGN KEY		(FinalDestination)	REFERENCES	BusStop(BusStopName) -- no ON DELETE statement needed
+    , FOREIGN KEY		(BusStopName)		REFERENCES	BusStop(BusStopName)
 	);
 
 CREATE TABLE Ride
@@ -56,11 +56,11 @@ CREATE TABLE Ride
 	, StartStop     	VARCHAR(50)
 	, EndStop       	VARCHAR(50)
     , PRIMARY KEY		(StartDate, StartTime, IDCardNumber)
-	, FOREIGN KEY		(IDCardNumber)	REFERENCES Passenger(IDCardNumber)
-	, FOREIGN KEY 		(BusLineName)	REFERENCES BusLine(BusLineName)
-    , FOREIGN KEY		(FinalDestination)	REFERENCES	BusStop(BusStopName)
-	, FOREIGN KEY 		(StartStop)		REFERENCES BusStop(BusStopName)
-	, FOREIGN KEY 		(EndStop)		REFERENCES BusStop(BusStopName)
+	, FOREIGN KEY		(IDCardNumber)		REFERENCES 	Passenger(IDCardNumber)	ON DELETE CASCADE
+	, FOREIGN KEY 		(BusLineName)		REFERENCES	BusLine(BusLineName)		
+    , FOREIGN KEY		(FinalDestination)	REFERENCES	BusStop(BusStopName)	
+	, FOREIGN KEY 		(StartStop)			REFERENCES 	BusStop(BusStopName)	
+	, FOREIGN KEY 		(EndStop)			REFERENCES 	BusStop(BusStopName)	
 	);
     
 INSERT INTO Address(Street, City, Zipcode, CivicNumber, Country)
@@ -264,7 +264,7 @@ VALUES
     , ('Vanløse St.', ST_GeomFromText('POINT(55.6836 12.4876)'))
     ;
 
-INSERT INTO BusLine(BusLineName, FinalDestination, BusStop, StopOrder)
+INSERT INTO BusLine(BusLineName, FinalDestination, BusStopName, StopOrder)
 VALUES
       ('6A', 'Gladsaxe Trafikplads', 'Københavns Hovedbanegård', 1)
     , ('6A', 'Gladsaxe Trafikplads', 'Rådhuspladsen', 2)
@@ -458,19 +458,19 @@ VALUES
 SELECT DISTINCT R.IDCardNumber FROM Ride R
 JOIN BusLine BL
     ON R.BusLineName = BL.BusLineName 
-    AND R.StartStop = BL.BusStop
+    AND R.StartStop = BL.BusStopName
 WHERE BL.StopOrder = 1;
 
 -- get the name of the bus stop served by the most bus lines.
-SELECT BusStop, COUNT(*)
+SELECT BusStopName, COUNT(*)
 FROM BusLine
-GROUP BY BusStop
+GROUP BY BusStopName
 HAVING COUNT(*) = (
 	SELECT MAX(StopCount)
 	FROM (
 		SELECT COUNT(*) AS StopCount
         FROM BusLine
-        GROUP BY BusStop
+        GROUP BY BusStopName
 	) AS Count
 );
 
@@ -508,7 +508,7 @@ BEGIN
     -- check if StartStop is served by the given Bus Line
     IF NOT EXISTS (
 		SELECT BusStopName FROM BusLine
-        WHERE NEW.StartStop = BusStop AND NEW.BusLineName = BusLineName)
+        WHERE NEW.StartStop = BusStopName AND NEW.BusLineName = BusLineName)
 	THEN 
 		SIGNAL SQLSTATE '45000'
 		SET MESSAGE_TEXT = 'The StartStop is not served by the BusLineName';
@@ -517,7 +517,7 @@ BEGIN
     -- check if EndStop is served by the given Bus Line
     IF NOT EXISTS (
 		SELECT BusStopName FROM BusLine
-        WHERE NEW.EndStop = BusStop AND NEW.BusLineName = BusLineName)
+        WHERE NEW.EndStop = BusStopName AND NEW.BusLineName = BusLineName)
 	THEN 
 		SIGNAL SQLSTATE '45000'
 		SET MESSAGE_TEXT = 'The EndStop is not served by the BusLineName';
@@ -535,7 +535,7 @@ BEGIN
     INTO vAmountServed
     FROM BusLine s1
     JOIN BusLine s2 ON s1.BusLineName = s2.BusLineName
-	WHERE s1.BusStop = st1 AND s2.BusStop = st2;
+	WHERE s1.BusStopName = st1 AND s2.BusStopName = st2;
     
     RETURN vAmountServed;
     
@@ -546,14 +546,14 @@ DROP PROCEDURE IF EXISTS AddStop;
 DELIMITER //
 CREATE PROCEDURE AddStop (IN vBusLineName VARCHAR(45), IN vStopName VARCHAR(45)) 
 BEGIN
-    DECLARE vStopExists VARCHAR(45) DEFAULT NULL; -- var to hold StopID
-    DECLARE vBusLineExists VARCHAR(45) DEFAULT NULL;     -- var to hold BusLineID
+    DECLARE vStopExists VARCHAR(45) DEFAULT NULL; 	 -- var to hold StopID
+    DECLARE vBusLineExists VARCHAR(45) DEFAULT NULL; -- var to hold BusLineID
     DECLARE vFinalDestination VARCHAR(50);
     DECLARE vMaxStopOrder INT;
 
-    main: BEGIN  -- Labeling the main block for use with LEAVE
+    main: BEGIN  -- labeling the main block for use with LEAVE
 
-        -- Check if StopName exists in the BusStop table
+        -- check if StopName exists in the BusStop table
         SELECT BusStopName INTO vStopExists FROM BusStop WHERE BusStopName = vStopName;
         IF vStopExists IS NULL THEN
             SIGNAL SQLSTATE '45000'
@@ -561,7 +561,7 @@ BEGIN
             LEAVE main;
         END IF;
 
-        -- Check if BusLineName exists in the BusLine table
+        -- check if BusLineName exists in the BusLine table
         SELECT BusLineName INTO vBusLineExists FROM BusLine WHERE BusLineName = vBusLineName
         LIMIT 1;
         IF vBusLineExists IS NULL THEN
@@ -570,23 +570,23 @@ BEGIN
             LEAVE main;
         END IF;
 
-        -- If stop does exist Check if the stop is already on the bus line's route
+        -- if stop does exist Check if the stop is already on the bus line's route
         IF EXISTS (
             SELECT 1
             FROM BusLine
-            WHERE BusLineName = vBusLineName AND BusStop = vStopName
+            WHERE BusLineName = vBusLineName AND BusStopName = vStopName
         ) THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Stop already exists on this line';
             LEAVE main;
         ELSE
-            -- If it is not on the route, add the new stop
+            -- if it is not on the route, add the new stop
             SELECT FinalDestination, MAX(StopOrder) + 1
 			INTO vFinalDestination, vMaxStopOrder
 			FROM BusLine
 			WHERE BusLineName = vBusLineName;
             
-            INSERT INTO BusLine (BusLineName, FinalDestination, StopOrder, BusStop)
+            INSERT INTO BusLine (BusLineName, FinalDestination, StopOrder, BusStopName)
             VALUES (
                 vBusLineName,
                 vFinalDestination,
