@@ -453,3 +453,10 @@ VALUES
 	, ('2024-11-04', '11:30:00', 14, '345678 901 345 678 6', '7A', 'Hellerup St.', 'Valby St.', 'Nordhavn St.')
 	;
 
+
+SHOW TABLES;
+SELECT * FROM Address;
+SELECT * FROM BusLine;
+SELECT * FROM BusStop;
+SELECT * FROM Passenger;
+SELECT * FROM Ride;
