@@ -1,39 +1,35 @@
--- Get all passenger id's where their ride started at the first stop on a bus line.
+-- get all passenger id's where their ride started at the first stop on a bus line.
 SELECT DISTINCT R.IDCardNumber FROM Ride R
 JOIN BusLine BL
     ON R.BusLineName = BL.BusLineName 
-    AND R.StartStop = BL.StopOnBusLine
+    AND R.StartStop = BL.BusStopName
 WHERE BL.StopOrder = 1;
 
--- Get the name of the bus stop served by the most bus lines.
-# With Counter
-SELECT StopOnBusLine, COUNT(*)
+-- get the name of the bus stop served by the most bus lines.
+SELECT BusStopName, COUNT(*)
 FROM BusLine
-GROUP BY StopOnBusLine
+GROUP BY BusStopName
 HAVING COUNT(*) = (
 	SELECT MAX(StopCount)
 	FROM (
 		SELECT COUNT(*) AS StopCount
         FROM BusLine
-        GROUP BY StopOnBusLine
+        GROUP BY BusStopName
 	) AS Count
 );
 
-
--- For each line, get the ID of the passenger who took the ride that lasted longer.
-SELECT IDCardNumber, BusLineName, Duration FROM Ride AS OuterRide
+-- for each line, get the ID of the passenger who took the ride that lasted longer.
+SELECT DISTINCT IDCardNumber, BusLineName, Duration FROM Ride AS OuterRide
 WHERE Duration = (
 	SELECT MAX(Duration) FROM Ride AS InnerRide
     WHERE InnerRide.BusLineName = OuterRide.BusLineName);
-    
 
-# The ID of the passengers who never took a bus line more than once per day.
+-- get the ID of the passengers who never took a bus line more than once per day.
 SELECT DISTINCT IDCardNumber FROM Ride
 GROUP BY StartDate, IDCardNumber
 HAVING COUNT(*) = 1;
 
-
--- Get the name of the bus stops that are never used, that is, they are neither the start nor the end stop for any ride.
+-- get the name of the bus stops that are never used, i.e. they are neither the start nor the end stop for any ride.
 SELECT BusStopName FROM BusStop
 WHERE BusStopName NOT IN (SELECT StartStop FROM Ride)
 AND BusStopName NOT IN (SELECT EndStop FROM Ride);
