@@ -1,3 +1,46 @@
+-- SQL TABLE MODIFICATIONS
+-- use case 1: passenger moves
+INSERT INTO Address(Street, City, Zipcode, CivicNumber, Country)
+	VALUES ('Carlsgatan', 'Malmö', '211 20', '54321', 'Sweden');
+UPDATE Passenger
+    SET AddressID = (SELECT AddressID FROM Address WHERE CivicNumber = '54321')
+    WHERE IDCardNumber = '789012 345 789 012 7';
+DELETE FROM Address
+    WHERE AddressID = 7;
+
+SELECT p.IDCardNumber, p.Email,  p.FirstName, p.LastName, p.PhoneNumber, p.AddressID, a.Street, a.City, a.Zipcode, a.CivicNumber, a.Country
+	FROM Passenger p
+	JOIN Address a ON p.AddressID = a.AddressID
+	WHERE p.IDCardNumber = '789012 345 789 012 7';
+
+-- use case 2: a bus stop changes to a temporary stop
+INSERT INTO BusStop(BusStopName, GPSCoordinates)
+	VALUES ('Østerbrogade (Midlertidigt Stop)', ST_GeomFromText('POINT(55.5333 12.5123)'));
+UPDATE BusLine
+	SET BusStopName = 'Østerbrogade (Midlertidigt Stop)' -- will affect all lines
+	WHERE BusStopName = 'Østerbrogade';
+    
+SELECT * FROM BusLine WHERE BusLineName = '150S';
+
+-- use case 3: new 5C "Nørrebro St." line ends 2 stops earlier 
+INSERT INTO BusLine (BusLineName, FinalDestination, BusStopName, StopOrder)
+	SELECT BusLineName, 'Husum Torv', BusStopName, StopOrder
+	FROM BusLine
+	WHERE BusLineName = '5C' AND FinalDestination = 'Herlev St.';
+SET FOREIGN_KEY_CHECKS = 0;
+DELETE FROM BusLine
+	WHERE BusLineName = '5C' 
+	AND FinalDestination = 'Husum Torv'
+	AND (StopOrder = 9 OR StopOrder = 10);
+SET FOREIGN_KEY_CHECKS = 1;
+INSERT INTO BusLine (BusLineName, FinalDestination, BusStopName, StopOrder)
+VALUES 
+    ('5C', 'Husum Torv', 'Brønshøj Torv', 9),
+    ('5C', 'Husum Torv', 'Husum Torv', 10);
+
+SELECT * FROM BusLine Where BusLineName = '5C';
+
+-- SQL DATA QUERIES
 -- get all passenger id's where their ride started at the first stop on a bus line.
 SELECT DISTINCT R.IDCardNumber FROM Ride R
 JOIN BusLine BL
@@ -34,6 +77,10 @@ SELECT BusStopName FROM BusStop
 WHERE BusStopName NOT IN (SELECT StartStop FROM Ride)
 AND BusStopName NOT IN (SELECT EndStop FROM Ride);
 
+
+
+
+-- SQL PROGRAMMING
 -- a trigger that prevents inserting a ride starting and ending at the same stop, or at a stop not served by that line. 
 DROP TRIGGER IF EXISTS Ride_Before_Insert;
 
